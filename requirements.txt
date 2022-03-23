@@ -1,4 +1,4 @@
 bitcoin
-urllib.request
+urllib3
 fastapi
 datetime

@@ -13,7 +13,7 @@ import json
 import requests
 
 
-
+s = requests.Session()
 
 app = FastAPI()
 
@@ -54,7 +54,7 @@ def check_balance(address: str):
 
 
     try:
-        wallet = requests.get(f"https://api-r.bitcoinchain.com/v1/address/{address}")
+        wallet = s.get(f"https://api-r.bitcoinchain.com/v1/address/{address}", stream = True)
         response = wallet.json()
         if zero in response:
             return(0)

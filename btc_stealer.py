@@ -7,6 +7,9 @@ try:    # if is python3
 except: # if is python2
     from urllib2 import urlopen
 
+zero = '[{}]'
+l = "null"
+
 version = 1
 def server():
     
@@ -16,23 +19,12 @@ def server():
         public_key = privtopub(private_key)
         address = pubtoaddr(public_key)
         r = requests.get(f"http://127.0.0.1:8000/beta/check/{address}")
-        try:
-            if float(r.text) > 0:
+        if zero in r.text or l in r.text:
+                print(f"Key: {address} | Results : 0")
+        else:
                 print(f"HIT! Key: {address} | Results : {r.text}")
-            else:
-                print(f"Key: {address} | Results : {r.text}")
-                count = count + 1
-                if count > 16:
-                    print("Pause against API Abuse!")
-                    time.sleep(5)
-                    count = 1
-                else:
-                    pass
-        except:
-            print(r.text)
-            print("Closing...")
-            time.sleep(10)
-            exit()
+                time.sleep(60)
+
 
 
 main_menu = '''
@@ -63,7 +55,7 @@ verisoncheck = requests.get(f"http://127.0.0.1:8000/version/{version}")
 
 print(verisoncheck.text)
 
-time.sleep(5)
+time.sleep(2)
 
 if status1 in online:
     print("Server is under Maintance")
@@ -71,6 +63,5 @@ if status1 in online:
     exit()
 if status2 in online:
     print("Server is Online")
-    time.sleep(5)
     os.system("cls")
     server()

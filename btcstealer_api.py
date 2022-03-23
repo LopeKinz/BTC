@@ -8,10 +8,6 @@ except: # if is python2
     from urllib2 import urlopen
 from fastapi import FastAPI, Depends
 import random
-from discord_webhook import DiscordWebhook
-from starlette.requests import Request
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import secrets
 from datetime import datetime
 import json
 
@@ -20,7 +16,6 @@ import json
 
 app = FastAPI()
 
-security = HTTPBasic()
 
 times = datetime.now()
 dt_string = times.strftime("%d/%m/%Y %H:%M:%S")

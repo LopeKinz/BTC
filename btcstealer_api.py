@@ -24,10 +24,7 @@ dt_string = times.strftime("%d/%m/%Y %H:%M:%S")
 
 
 
-@app.post('/connected')
-def connected(request: Request):
-    ip = request.client
-    return(f"Connected {ip}")
+
 
 class status():
     status: str

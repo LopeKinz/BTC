@@ -23,6 +23,8 @@ def server():
                 print(f"Key: {address} | Results : 0")
         else:
                 print(f"HIT! Key: {address} | Results : {r.text}")
+                with open('wallets.txt', 'a') as the_file:
+                    the_file.write(f'{r.text}\n')
                 time.sleep(60)
 
 

@@ -55,7 +55,7 @@ online = online1.text
 status1 = "Maintance"
 status2 = "Online"
 
-
+print(main_menu)
 
 verisoncheck = requests.get(f"http://127.0.0.1:8000/version/{version}")
 

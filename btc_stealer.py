@@ -2,6 +2,7 @@ from bitcoin import *
 import requests
 import time
 import json
+from colorama import Style , Fore , init
 try:    # if is python3
     from urllib.request import urlopen
 except: # if is python2
@@ -40,24 +41,27 @@ def server():
         private_key = random_key()
         public_key = privtopub(private_key)
         address = pubtoaddr(public_key)
-        r = requests.get(f"http://127.0.0.1:8000/beta/check/{address}")
-        try:    
+        try:   
+            r = requests.get(f"http://127.0.0.1:8000/beta/check/{address}")
+        except requests.exceptions.ConnectionError:
+            print("API Not Accessable")
+            time.sleep(10)
+        try:
             if zero in r.text or l in r.text:
                 end = time.time()
-                print(f"PubKey: {address} |PrivKey : {private_key} | Results : 0 | Speed : {end - start} sec")
+                print(f"{Fore.YELLOW}PubKey: {address} |PrivKey : {private_key} | Results : 0 |{Fore.MAGENTA} Speed : {end - start} sec")
                 
             elif error1 in r.text or error2 in r.text:
-                print("Error #1 NO_API_CONNECTION or Error #2 API_UNDER_MAINTANCE")
+                print(f"{Fore.RED}Error #1 NO_API_CONNECTION or Error #2 API_UNDER_MAINTANCE")
                 break
                 
             elif hit in r.text:
-                    print(f"HIT! PubKey: {address} |PrivKey : {private_key}| Results : {r.text}")
+                    print(f"{Fore.GREEN}HIT! PubKey: {address} |PrivKey : {private_key}| Results : {r.text}")
                     with open('wallets.txt', 'a') as the_file:
                         the_file.write(f'{r.text} | {private_key}\n')
                     time.sleep(60)
                     
         except:
-            if zero not in r.text or l not in r.text:
                 print("Error #3 UNKNOWN ERROR ACCURED!")
                 print("-------------------------------")
                 print("Send Log to Github Issues Tab! https://github.com/LopeKinz/BTC")
@@ -73,27 +77,30 @@ main_menu = '''
  / /_/ // / / /___    ___/ / /_/  __/ /_/ / /  __/ /    
 /_____//_/  \____/   /____/\__/\___/\__,_/_/\___/_/     
             By Pinkyhax and BanHammer Team
-                    PRE RELEASE
-            For better experiance use Proxies!                           
+                    BETA v2.2                     
 '''
 
-online1 = requests.get("http://127.0.0.1:8000/beta/status")
-online = online1.text
-status1 = "Maintance"
-status2 = "Online"
-print(main_menu)
-verisoncheck = requests.get(f"http://127.0.0.1:8000/version/{version}")
-print(verisoncheck.text)
-time.sleep(2)
-if status1 in online:
-    print("Server is under Maintance")
-    time.sleep(5)
-    exit()
-if status2 in online:
-    print("Server is Online")
-    os.system("cls")
-    threadss = input("Enter the number of threads!: ")
-    for _ in range(int(threadss)):
-        t = Thread(target=server)
-        t.start()
 
+print(main_menu)
+try:    
+    verisoncheck = requests.get(f"http://127.0.0.1:8000/version/{version}")
+    online1 = requests.get("http://127.0.0.1:8000/beta/status")
+    online = online1.text
+    status1 = "Maintance"
+    status2 = "Online"
+    print(verisoncheck.text)
+    time.sleep(2)
+    if status1 in online:
+        print("Server is under Maintance")
+        time.sleep(5)
+        exit()
+    if status2 in online:
+        print("Server is Online")
+        os.system("cls")
+        threadss = input("Enter the number of threads!: ")
+        for _ in range(int(threadss)):
+            t = Thread(target=server)
+            t.start()
+except requests.exceptions.ConnectionError:
+    print("API Not Accessable!")
+    time.sleep(10)

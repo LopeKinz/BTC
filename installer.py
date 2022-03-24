@@ -16,5 +16,7 @@ try:
     os.system("pip3 install requests")
     time.sleep(2)
     os.system("pip3 install psutil")
+    time.sleep(2)
+    os.system("pip3 install colorama")
 except:
     print("No Pip installed!")

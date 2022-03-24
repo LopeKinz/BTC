@@ -42,7 +42,7 @@ def get_status():
 
 @app.get("/version/{version}")
 def version(version : int):
-    curr_version = 1
+    curr_version = 2
     if curr_version > version:
         return("Check for Updates!")
     else:
@@ -51,8 +51,6 @@ def version(version : int):
 
 @app.get('/beta/check/{address}')
 def check_balance(address: str):
-
-
     try:
         wallet = s.get(f"https://api-r.bitcoinchain.com/v1/address/{address}", stream = True)
         response = wallet.json()
@@ -60,9 +58,5 @@ def check_balance(address: str):
             return(0)
         else:
             return(response)
-    except HTTPError as http_err:
-        return(f'HTTP error occurred: {http_err}')
-    except Exception as err:
-        return(f'Other error occurred: {err}')
-
-
+    except:
+        return("Internal Server Error")

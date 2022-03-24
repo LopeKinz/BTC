@@ -59,4 +59,6 @@ def check_balance(address: str):
         else:
             return(response)
     except:
-        return("Internal Server Error")
+        return("Could not Request Server!")
+        with open('logs.txt', 'a') as the_file:
+            the_file.write(f'{response}\n')

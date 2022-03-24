@@ -9,6 +9,7 @@ except: # if is python2
     from urllib2 import urlopen
 import platform,socket,re,uuid,psutil,logging
 from threading import Thread, Lock
+import math
 
 
 zero = '[{}]'
@@ -35,39 +36,37 @@ def getSystemInfo():
         logging.exception(e)
 
 
-def server():
+def server(i):
     while True:
         start = time.time()
         private_key = random_key()
         public_key = privtopub(private_key)
         address = pubtoaddr(public_key)
+        privadress = privkey_to_address(private_key)
         try:   
             r = requests.get(f"http://127.0.0.1:8000/beta/check/{address}")
         except requests.exceptions.ConnectionError:
             print("API Not Accessable")
-            time.sleep(10)
+            pass
         try:
             if zero in r.text or l in r.text:
                 end = time.time()
-                print(f"{Fore.YELLOW}PubKey: {address} |PrivKey : {private_key} | Results : 0 |{Fore.MAGENTA} Speed : {end - start} sec")
+                print(f"{Fore.LIGHTYELLOW_EX} Thread %d = {Fore.YELLOW}PubKey: {address} |PrivKey : {privadress} | Balance : 0 |{Fore.MAGENTA} Processtime : {int(math.ceil(end - start))} sec" % i)
                 
             elif error1 in r.text or error2 in r.text:
                 print(f"{Fore.RED}Error #1 NO_API_CONNECTION or Error #2 API_UNDER_MAINTANCE")
-                break
+                with open('logs.txt', 'w') as the_filed:
+                    the_filed.write(f'{r.text}\n')
+                pass
                 
             elif hit in r.text:
-                    print(f"{Fore.GREEN}HIT! PubKey: {address} |PrivKey : {private_key}| Results : {r.text}")
-                    with open('wallets.txt', 'a') as the_file:
+                    print(f"{Fore.GREEN}HIT! PubKey: {address} |PrivKey : {privadress}| Results : {r.text}")
+                    with open('wallets.txt', 'w') as the_file:
                         the_file.write(f'{r.text} | {private_key}\n')
                     time.sleep(60)
                     
         except:
-                print("Error #3 UNKNOWN ERROR ACCURED!")
-                print("-------------------------------")
-                print("Send Log to Github Issues Tab! https://github.com/LopeKinz/BTC")
-                print("--------------------------------------------------------------")
-                print(f"{json.loads(getSystemInfo())}\n"+ r.text)
-                break   
+                pass
 
 main_menu = '''
 
@@ -98,8 +97,8 @@ try:
         print("Server is Online")
         os.system("cls")
         threadss = input("Enter the number of threads!: ")
-        for _ in range(int(threadss)):
-            t = Thread(target=server)
+        for i in range(int(threadss)):
+            t = Thread(target=server, args=(i,))
             t.start()
 except requests.exceptions.ConnectionError:
     print("API Not Accessable!")

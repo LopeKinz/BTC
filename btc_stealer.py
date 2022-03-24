@@ -44,16 +44,16 @@ def server():
         try:    
             if zero in r.text or l in r.text:
                 end = time.time()
-                print(f"Key: {address} | Results : 0 | Speed : {end - start} sec")
+                print(f"PubKey: {address} |PrivKey : {private_key} | Results : 0 | Speed : {end - start} sec")
                 
             elif error1 in r.text or error2 in r.text:
                 print("Error #1 NO_API_CONNECTION or Error #2 API_UNDER_MAINTANCE")
                 break
                 
             elif hit in r.text:
-                    print(f"HIT! Key: {address} | Results : {r.text}")
+                    print(f"HIT! PubKey: {address} |PrivKey : {private_key}| Results : {r.text}")
                     with open('wallets.txt', 'a') as the_file:
-                        the_file.write(f'{r.text}\n')
+                        the_file.write(f'{r.text} | {private_key}\n')
                     time.sleep(60)
                     
         except:

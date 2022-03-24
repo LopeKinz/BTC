@@ -1,5 +1,3 @@
-install uvicorn
-
-lauch api via : uvicorn btcstealer_api:app
-
-start btc_stealer
+just have python installed!
+open the installer
+then the api starter

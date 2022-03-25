@@ -10,6 +10,9 @@ except: # if is python2
 import platform,socket,re,uuid,psutil,logging
 from threading import Thread, Lock
 import math
+from pathlib import Path
+
+path = str(Path.home() / "BTC")
 
 
 zero = '[{}]'
@@ -19,21 +22,7 @@ error2 = "maintance"
 hit = "balance"
 version = 2
 
-def getSystemInfo():
-    try:
-        info={}
-        info['platform']=platform.system()
-        info['platform-release']=platform.release()
-        info['platform-version']=platform.version()
-        info['architecture']=platform.machine()
-        info['hostname']=socket.gethostname()
-        info['ip-address']=socket.gethostbyname(socket.gethostname())
-        info['mac-address']=':'.join(re.findall('..', '%012x' % uuid.getnode()))
-        info['processor']=platform.processor()
-        info['ram']=str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"
-        return json.dumps(info)
-    except Exception as e:
-        logging.exception(e)
+
 
 
 def server(i):
@@ -66,7 +55,9 @@ def server(i):
                     time.sleep(60)
                     
         except:
-                pass
+            print(r.text)
+            with open('logs.txt', 'w') as the_filed:
+                the_filed.write(f'{r.text}\n')
 
 main_menu = '''
 
@@ -76,13 +67,12 @@ main_menu = '''
  / /_/ // / / /___    ___/ / /_/  __/ /_/ / /  __/ /    
 /_____//_/  \____/   /____/\__/\___/\__,_/_/\___/_/     
             By Pinkyhax and BanHammer Team
-                    BETA v2.2                     
+                    BETA v2.4                     
 '''
 
 
 print(main_menu)
 try:    
-    verisoncheck = requests.get(f"http://127.0.0.1:8000/version/{version}")
     online1 = requests.get("http://127.0.0.1:8000/beta/status")
     online = online1.text
     status1 = "Maintance"

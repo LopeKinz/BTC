@@ -77,7 +77,6 @@ try:
     online = online1.text
     status1 = "Maintance"
     status2 = "Online"
-    print(verisoncheck.text)
     time.sleep(2)
     if status1 in online:
         print("Server is under Maintance")

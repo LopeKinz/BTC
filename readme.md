@@ -22,7 +22,7 @@ pip install bitcoin requests colorama
 1. Run the script using Python:
 
 ```
-python bitcoin_wallet_cracker.py
+python start.py
 ```
 
 2. The script will check the status of the API server. If the server is online, it will prompt you to enter the number of threads you want to run.

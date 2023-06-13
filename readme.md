@@ -1,5 +1,7 @@
 # Bitcoin Wallet Cracker
 
+# V2 IS COMING SOON [V2](https://github.com/LopeKinz/BTCSt3aIer)
+
 This script is designed to check the balance of Bitcoin wallets by generating random private keys, deriving public keys and addresses, and querying an API for the balance of each address.
 
 ## Prerequisites
